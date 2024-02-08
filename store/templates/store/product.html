@@ -1,0 +1,33 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<br/><br/>
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <div class="card" style="width: 45rem;">
+                <img src="{{ product.image.url }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h2 class="card-title">{{ product.name }}</h2>
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-10">
+                                    <p>{{ product.description2 }}</p>
+                                </div>
+                            </div>
+                            {% if product.is_sale %}
+                        <strike>${{ product.price }}</strike>&nbsp; ${{ product.sale_price }}
+                    {% else %}
+                        ${{ product.price }}
+                    {% endif %}
+                    <br/><br/>
+                    <a href="#" class="btn btn-secondary">Buy Course</a>
+                    <br/><br/>
+                    <a href="{% url 'home' %}" class="btn btn-secondary">Return Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br/><br/><br/><br/><br/><br/>
+{% endblock %}
