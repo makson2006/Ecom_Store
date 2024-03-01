@@ -9,5 +9,94 @@
                 </div>
             </div>
         </header>
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <br/>
+<div class="container">
+{% if cart_products %}
+    {% for product in cart_products %}
+        <div class="col-8">
+            <div class="card" style="width: 28rem;">
+                <img src="{{ product.image.url }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h2 class="card-title">{{ product.name }}</h2>
+                        <div class="container">
+                                <div class="col-10">
+                                    <p>{{ product.description }}</p>
+                            </div>
+                            {% if product.is_sale %}
+                        <strike>${{ product.price }}</strike>&nbsp; ${{ product.sale_price }}
+                    {% else %}
+                        ${{ product.price }}
+                    {% endif %}
+
+                            <div class="col-md-4">
+
+                                {% for key,value in quantities.items %}
+                                    {% if key == product.id|slugify %}
+                                Quantities: {{ value }}
+                                    {% endif %}
+                                {% endfor %}
+
+                            </div>
+
+                            <br/><br/>
+                            <div><a class="btn btn-secondary" href="{% url 'product' product.id %}">View product</a></div><br/>
+                            <a href="{% url 'home' %}" class="btn btn-secondary">Return Home</a><br/><br/>
+                            <button type="button" data-index="{{product.id}}" class="btn btn-danger delete-product">Delete</button>
+
+
+                </div>
+            </div>
+        </div> <br/>
+    </div>
+
+
+
+    {% endfor %}
+    <h3>Total:</h3>
+    <h4>${{ totals }}</h4><br/><br/>
+    {% else %}
+    <h2>There is nothing in your cart...</h2>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+    {% endif %}
+</div>
+
+
+<script>
+    $(document).on('click', '.delete-product', function(e){
+        e.preventDefault();
+        var productId = $(this).data('index'); // Отримати ID товару для видалення
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'cart_delete' %}',
+            data: {
+                product_id: productId,
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+            success: function(json){
+                // Видалення успішне, оновити сторінку
+                location.reload();
+            },
+            error: function(xhr, errmsg, err){
+                // Обробка помилок якщо потрібно
+            }
+        });
+    });
+
+    // Виведення повідомлення внизу сторінки
+    $(document).ready(function() {
+        // Перевірка, чи є повідомлення у пам'яті браузера (при оновленні сторінки)
+        var message = sessionStorage.getItem('cartMessage');
+        if (message) {
+            var messageElement = $('<div class="alert alert-success">' + message + '</div>');
+            $('body').append(messageElement);
+
+            // Після виведення повідомлення очистіть пам'ять браузера
+            sessionStorage.removeItem('cartMessage');
+        }
+    });
+</script>
+
 {% endblock %}

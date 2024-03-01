@@ -19,9 +19,14 @@ def category(request,foo):
         messages.success(request, ("That Category Doesn't exist"))
         return redirect('home')
 
-def home(request):
+def courses(request):
     products = Product.objects.all()
-    return render(request, "store/home.html", {'products':products})
+    return render(request, "store/all_products.html", {'products':products})
+
+
+
+def home(request):
+    return render(request, "store/home.html", {})
 
 def about(request):
     return render(request, "store/about.html", {})

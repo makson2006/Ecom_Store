@@ -22,7 +22,7 @@ class Customer(models.Model):
 # all of our Products
 class Product(models.Model):
     name = models.CharField(max_length=50)
-    price = models.DecimalField(default=0, decimal_places=2, max_digits=6)
+    price = models.DecimalField(null=True, blank=True, default=0, decimal_places=2, max_digits=6)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
     description = models.CharField(max_length=30, default='', blank=True,null=True)
     description2 = models.TextField(max_length=10000, default='', blank=True,null=True)
@@ -32,6 +32,11 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+class Books(models.Model):
+    name = models.CharField(max_length=50)
+    author = models.CharField(max_length=50)
+    description = models.CharField(max_length=30, default='', blank=True,null=True)
+    file = models.FileField(null=True, blank=True, upload_to='Files')
 
 
 # Customer orders
