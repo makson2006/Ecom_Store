@@ -1,0 +1,33 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<br/><br/>
+    <div class="row justify-content-center">
+        <div class="col-6"> <!-- Змінено ширину колонки на col-6 -->
+            <div class="card" style="width: 90%;"> <!-- Змінено ширину картки -->
+                <div class="card-body">
+                     <img src="{{ book.image.url }}" class="card-img-top" alt="...">
+                    <h2 class="card-title">{{ book.name }}<br/>{{ book.author }}</h2>
+
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-10">
+                                    <p>{{ book.description2 }}</p>
+                                </div>
+                            </div>
+                    <br/><br/>
+                        <a href="{% url 'download_book' book.id %}" class="btn btn-secondary">Download</a> <!-- Додайте посилання на завантаження -->
+
+
+
+
+                    <a href="{% url 'home' %}" class="btn btn-secondary">Return Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br/><br/><br/><br/><br/><br/>
+
+{% endblock %}

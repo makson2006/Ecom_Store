@@ -1,0 +1,44 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+  <!-- Header-->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-3">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Books</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Upgrade yourself with best courses and books</p>
+                </div>
+            </div>
+        </header>
+<br/><br/><br/>
+
+                    {% for book in all_books %}
+
+<div class="row justify-content-center">
+        <div class="col-8">
+            <div class="card" style="width: 20rem;">
+                <img src="{{ book.image.url }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h2 class="card-title">{{ book.name }}</h2>
+                                        Author:<h3 class="card-title">{{ book.author }}</h3>
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-10">
+                                    <p>{{ book.description }}</p>
+                                    DOWNLOAD FOR FREE!
+                                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'book' book.id %}">Read more</a></div>
+                            </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+
+
+         {% endfor %}
+ {% endblock %}

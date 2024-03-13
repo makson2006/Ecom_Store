@@ -65,7 +65,7 @@
 <script>
     $(document).on('click', '.delete-product', function(e){
         e.preventDefault();
-        var productId = $(this).data('index'); // Отримати ID товару для видалення
+        var productId = $(this).data('index');
 
         $.ajax({
             type: 'POST',
@@ -76,24 +76,18 @@
                 action: 'post'
             },
             success: function(json){
-                // Видалення успішне, оновити сторінку
                 location.reload();
             },
             error: function(xhr, errmsg, err){
-                // Обробка помилок якщо потрібно
             }
         });
     });
 
-    // Виведення повідомлення внизу сторінки
     $(document).ready(function() {
-        // Перевірка, чи є повідомлення у пам'яті браузера (при оновленні сторінки)
         var message = sessionStorage.getItem('cartMessage');
         if (message) {
             var messageElement = $('<div class="alert alert-success">' + message + '</div>');
             $('body').append(messageElement);
-
-            // Після виведення повідомлення очистіть пам'ять браузера
             sessionStorage.removeItem('cartMessage');
         }
     });

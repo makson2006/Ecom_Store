@@ -1,11 +1,23 @@
-from django.shortcuts import render, redirect
-from .models import Product, Category
+import os
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Product, Category, Books
 from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from store.forms import SignUpForm
+from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+
+
+def download_book(request, book_id):
+    book = get_object_or_404(Books, id=book_id)
+    # Припустимо, що поле 'file' у вашій моделі містить шлях до файлу книги
+    with open(book.file.path, 'rb') as f:
+        response = HttpResponse(f.read(), content_type='application/pdf') # Змініть content_type на тип вашого файлу
+        response['Content-Disposition'] = 'attachment; filename=' + os.path.basename(book.file.path)
+        return response
 
 
 def category(request,foo):
@@ -14,15 +26,24 @@ def category(request,foo):
     try:
         category = Category.objects.get(name=foo)
         products = Product.objects.filter(category=category)
-        return render(request,'store/category.html', {'products':products,'category':category})
+        books = Books.objects.filter(category=category)
+        return render(request,'store/category.html', {'products':products,'category':category,'books':books})
     except:
         messages.success(request, ("That Category Doesn't exist"))
         return redirect('home')
 
-def courses(request):
+def all_products(request):
+    all_books = Books.objects.all()
     products = Product.objects.all()
-    return render(request, "store/all_products.html", {'products':products})
+    return render(request, "store/all_products.html", {'products':products,'all_books':all_books})
 
+def books(request):
+    all_books = Books.objects.all()
+    return render(request, 'store/all_books.html',{'all_books':all_books,})
+
+def book(request,pk):
+    book = Books.objects.get(id=pk)
+    return render(request, "store/book.html", {'book':book})
 
 
 def home(request):
